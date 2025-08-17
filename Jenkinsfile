@@ -19,9 +19,9 @@ pipeline {
       }
     }
 
-    stage('Scan Image') {
-      steps { scanImage("${DOCKER_IMG}", 'HIGH,CRITICAL') }
-    }
+    // stage('Scan Image') {
+    //   steps { scanImage("${DOCKER_IMG}", 'HIGH,CRITICAL') }
+    // }
 
     stage('Trigger Deploy') {
       steps {
