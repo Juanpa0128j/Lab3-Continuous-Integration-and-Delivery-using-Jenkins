@@ -13,7 +13,7 @@ pipeline {
             steps {
                 git branch: "${env.BRANCH_NAME}",
                     credentialsId: 'github-ssh',
-                    url: 'git@github.com:juanpa0128j/myapp.git'
+                    url: 'git@github.com:Juanpa0128j/Lab3-Continuous-Integration-and-Delivery-using-Jenkins.git'
             }
         }
 
