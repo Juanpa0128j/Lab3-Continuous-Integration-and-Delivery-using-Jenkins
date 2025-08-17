@@ -1,15 +1,11 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "node"
-    }
-
     environment {
-        REGISTRY     = "docker.io/juanpa0128j"   // your DockerHub user
-        IMAGE_NAME   = "${env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev'}"
-        IMAGE_TAG    = "v1.0"
-        DOCKER_IMAGE = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+        REGISTRY   = "docker.io/juanpa0128j"
+        IMAGE_NAME = "myapp"
+        IMAGE_TAG  = "${env.BRANCH_NAME}-v1.0"   // → main-v1.0 or dev-v1.0
+        DOCKER_IMG = "${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
     }
 
     stages {
@@ -17,7 +13,7 @@ pipeline {
             steps {
                 git branch: "${env.BRANCH_NAME}",
                     credentialsId: 'github-ssh',
-                    url: 'git@github.com:Juanpa0128j/Lab3-Continuous-Integration-and-Delivery-using-Jenkins.git'
+                    url: 'git@github.com:juanpa0128j/myapp.git'
             }
         }
 
@@ -35,7 +31,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE} ."
+                sh "docker build -t ${DOCKER_IMG} ."
             }
         }
 
@@ -46,7 +42,7 @@ pipeline {
                                                  passwordVariable: 'DOCKER_PASS')]) {
                     sh """
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    docker push ${DOCKER_IMAGE}
+                    docker push ${DOCKER_IMG}
                     docker logout
                     """
                 }
