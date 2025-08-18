@@ -1,4 +1,4 @@
-FROM node:24.6.0
+FROM node:20-alpine
 WORKDIR /opt
 COPY . /opt
 RUN npm install
